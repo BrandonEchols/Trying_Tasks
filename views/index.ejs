@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <script src="/javascripts/TaskModel.js"></script>
+  <script src="/javascripts/TaskList.js"></script>
+  <script>
+    var tl = new TaskList();
+  </script>
+  <link rel="stylesheet" type="text/css" href="/stylesheets/index.css">
+  <meta charset="UTF-8">
+  <title>Trying Tasks</title>
+</head>
+<body onload="tl.newList('TaskList')">
+  <div class="hud sign" id="welcomeSign">
+    <p>Welcome to Trying Tasks!</p>
+  </div>
+  <div>
+    <table class = "hud" id ="TaskList">
+    </table>
+  </div>
+  <hr class="divider">
+  <div class="hud" id="TaskMenu">
+    <input class="inputBox" id="inputBox" type="text" placeholder="New task name...">
+    <button class="button" id="newTaskButton" onclick="tl.taskInit()"> New Task </button>
+  </div>
+</body>
+</html>
