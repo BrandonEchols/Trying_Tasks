@@ -38,7 +38,7 @@
 
             var row = document.createElement("TR");
             row.className = "task";
-            var col = document.createElement("TD");
+            var col = document.createElement("TH");
             col.innerHTML = "" + (i + 1);
             row.appendChild(col);
 
