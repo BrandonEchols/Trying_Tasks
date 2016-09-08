@@ -27,9 +27,11 @@
 
         TaskList.prototype.taskInit = function taskInit(name) {
             var name = document.getElementById("inputBox").value;
+            document.getElementById("inputBox").value = "";
             if (name) {
                 taskModel.initTask(name);
             }
+
         }
 
         /*taskTable.prototype.restoreList = function restoreList(elementId, gameState) {
