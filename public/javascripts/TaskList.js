@@ -57,18 +57,20 @@
                 var user = {name : n, password : p};
             }
             if(user.name && user.password){
-                $.get("/login/" + user.name.toUpperCase() + "/p/" + user.password.toUpperCase(),  function(data) {
-                    if(data){
-                        console.log("LOOK: inside login.");
-                        data = JSON.parse(data);
-                        currentUser = user;
-                        that.getTaskList(currentUser);
-                        document.getElementById("WelcomeBanner").innerHTML = "Logged in as:\n" + currentUser.name;
-                    }
-                    else{
-                        alert("Username or password not recognized!");
-                    }
-                });
+                if(currentUser && user.name == currentUser.name) alert("You are already logged in as " + currentUser.name);
+                else {
+                    $.get("/login/" + user.name.toUpperCase() + "/p/" + user.password.toUpperCase(), function (data) {
+                        if (data) {
+                            data = JSON.parse(data);
+                            currentUser = user;
+                            that.getTaskList(currentUser);
+                            document.getElementById("WelcomeBanner").innerHTML = "Logged in as:\n" + currentUser.name;
+                        }
+                        else {
+                            alert("Username or password not recognized!");
+                        }
+                    });
+                }
             }else{
                 alert("You must fill in the email,\nand first name box to sign in!");
             }

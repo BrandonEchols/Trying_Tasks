@@ -16,9 +16,7 @@
         }
 
         this.clearList = function clearList(){
-            console.log("LOOK: inside clearList. list = " + model.list);
             model.list = [];
-            console.log("LOOK: model.list = " + model.list);
         }
 
         this.isComplete = function isComplete(taskIdx)
