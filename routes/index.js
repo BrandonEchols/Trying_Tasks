@@ -10,7 +10,7 @@ router.get('/', function(req, res, next) {
 });
 
 /* GET DataBase. */
-router.get('/db', function (request, response) {
+/*router.get('/db', function (request, response) {
   pg.connect(connectionString, function(err, client, done) {
     client.query('SELECT * FROM user_table', function(err, result) {
       done();
@@ -21,7 +21,7 @@ router.get('/db', function (request, response) {
       }
     });
   });
-});
+});*/
 
 /*CHECK LOGIN*/
 router.get('/login/:name/p/:password', function(request, response) {
