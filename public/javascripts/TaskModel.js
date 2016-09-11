@@ -14,6 +14,13 @@
         this.getListLength = function getListLength(){
             return model.list.length;
         }
+
+        this.clearList = function clearList(){
+            console.log("LOOK: inside clearList. list = " + model.list);
+            model.list = [];
+            console.log("LOOK: model.list = " + model.list);
+        }
+
         this.isComplete = function isComplete(taskIdx)
         {
             if(taskIdx < model.list.length) {
@@ -23,14 +30,23 @@
             return false;
         }
 
-        this.initTask = function initTask(name){
+        this.initTask = function initTask(name, complete){
             var task = {
-                name: name ? name : untitled, //This is the default name, untitled
+                name: name ? name : "untitled", //This is the default name, untitled
                 timeMade : "TBD", //TODO: timeMade = current time stamp
-                isComplete : false
+                isComplete : complete ? complete : false
             }
             model.list[model.list.length] = task;
             this.displayTask(model.list.length - 1);
+        }
+
+        this.getTask = function getTask(idx){
+            if(idx < model.list.length){
+                return model.list[idx];
+            }
+            else{
+                return null;
+            }
         }
 
         this.displayTask = function displayTask(i){
@@ -63,12 +79,13 @@
             //Create a button that is either a complete button if the task
             //is not complete, or a remove button if it is complete
             var btn = document.createElement("BUTTON");
-            btn.className += " button";
+            btn.className += " btn btn-success";
             if (model.list[i].isComplete == true)
             {
                 var t = document.createTextNode("Remove");       // Create a text node
                 btn.appendChild(t);
                 btn.onclick = function () {
+                    tl.deleteTask(i); //deletes the task from db
                     for (var j = i; j < model.list.length - 1; j++){
                         model.list[j] = model.list[j + 1];
                     }
@@ -81,6 +98,7 @@
                 btn.appendChild(t);
                 btn.onclick = function () {
                     model.list[i].isComplete = true;
+                    tl.updateTask(i);
                     tl.updateDisplay();
                 }
             }

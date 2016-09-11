@@ -6,3 +6,10 @@ body {
 a {
   color: #00B7FF;
 }
+
+.center-table
+{
+  margin-left: auto;
+  margin-right: auto;
+  align-items: center;
+}

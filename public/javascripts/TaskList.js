@@ -1,9 +1,11 @@
 /**
  * Created by Brandon on 8/28/2016.
  */
+
 (function (global) {
     var TaskList = function TaskList() {
-        var initialTestRun = true;
+        var currentUser;
+        var debuggingMode = false;
         var taskModel = new TaskModel();
         var that;
         var taskTableElementId;
@@ -17,50 +19,138 @@
         }
 
         TaskList.prototype.updateDisplay = function updateDisplay() {
-            initTaskList("TaskList");
             if (taskModel.getListLength() > 0) {
+                initTaskList("TaskList");
                 for (var i = 0; i < taskModel.getListLength(); i++) {
                     taskModel.displayTask(i);
                 }
             }
+            else{
+                document.getElementById("TaskList").innerHTML = "";
+            }
         }
 
         TaskList.prototype.taskInit = function taskInit(name) {
-            var name = document.getElementById("inputBox").value;
-            document.getElementById("inputBox").value = "";
+            var name = document.getElementById("taskInputBox").value;
+            document.getElementById("taskInputBox").value = "";
             if (name) {
+                console.log("LOOK: taskModel.getListLength = " + taskModel.getListLength());
+                if(taskModel.getListLength() < 1){
+                    console.log("LOOK: inside condition for task init");
+                    initTaskList("TaskList", true);
+                }
                 taskModel.initTask(name);
+                if(currentUser){
+                    that.createTask(name);
+                }
             }
 
         }
 
-        /*taskTable.prototype.restoreList = function restoreList(elementId, gameState) {
-         //Remove old Content
-         document.getElementById(elementId).innerHTML = "";
+        TaskList.prototype.login = function login(inName, inPass) {
+            if(inName && inPass){
+                var user = {name : inName, password : inPass};
+            }
+            else{
+                var n = document.getElementById("userNameInputBox").value;
+                var p = document.getElementById("passwordInputBox").value;
+                var user = {name : n, password : p};
+            }
+            if(user.name && user.password){
+                $.get("/login/" + user.name + "/p/" + user.password,  function(data) {
+                    if(data){
+                        data = JSON.parse(data);
+                        currentUser = user;
+                        that.getTaskList(currentUser);
+                        document.getElementById("WelcomeBanner").innerHTML = "Welcome, " + currentUser.name;
+                    }
+                    else{
+                        alert("Username or password not recognized!");
+                    }
+                });
+            }
+        }
 
-         //Create a personalized greeting and display it in the welcome sign
-         var greeting = "Welcome back to Trying Tasks " + gameState.name + "! :-)"
-         document.getElementById("welcomeSign").innerHTML = greeting;
+        TaskList.prototype.createLogin = function createLogin(inName, inPass) {
+            if(inName && inPass) {
+                var user = {name : inName, password : inPass};
+            }
+            else{
+                var n = document.getElementById("userNameInputBox").value;
+                var p = document.getElementById("passwordInputBox").value;
+                var user = {name : n, password : p};
+            }
+            if(user.name && user.password){
+                $.get("/createLogin/" + user.name + "/p/" + user.password,  function(data) {
+                    if(data){
+                        /*data = JSON.parse(data);
+                        currentUser = user;
+                        that.getTaskList(currentUser);*/
+                    }
+                    that.login(user.name, user.password);
+                });
+            }
+        }
 
-         //Create new game using parameters
-         initTaskList(elementId, gameState.list);
+        TaskList.prototype.deleteLogin = function deleteLogin(inName, inPass) {
+            if(inName && inPass){
+                $.get("/deleteLogin/" + inName + "/p/" + inPassword,  function(data) {
+                    if(data){
+                        data = JSON.parse(data);
+                    }
+                });
+            }
+        }
 
-         }*/
+        TaskList.prototype.getTaskList = function getTaskList(user) {
+            $.get("/gettasks/" + user.name, function(data) {
+                if(data){
+                     data = JSON.parse(data);
+                     taskModel.clearList();
+                     for (var i = 0; i < data.length; i++){
+                         taskModel.initTask(data[i].description, data[i].completed);
+                     }
+                }
+                else{
+                    taskModel.clearList();
+                }
+                that.updateDisplay();
+             });
+        }
 
-        /*taskTable.prototype.openTaskListFile = function openTaskListFile(files) {
-         var fileReader = new FileReader();
+        TaskList.prototype.createTask = function createTask(name) {
+            if(currentUser){
+                $.get("/createTask/" + currentUser.name + "/d/" + name, function(data) {
+                    if(data){
+                        data = JSON.parse(data);
+                    }
+                });
+            }
+        }
 
-         //Add a listener to the fileReader to wait until it is done reading
-         fileReader.addEventListener("load", function(event) {
-         var savedGame = JSON.parse(fileReader.result);
-         that.restoreList(taskTableElementId, savedGame);
-         })
-         fileReader.readAsText(files[0]);
-         }*/
+        TaskList.prototype.updateTask = function updateTask(idx) {
+            if(currentUser){
+                $.get("/updateTask/" + currentUser.name + "/d/" + taskModel.getTask(idx).name + "/c/" + taskModel.isComplete(idx), function(data) {
+                    if(data){
+                    }
+                });
+            }
+        }
+
+        TaskList.prototype.deleteTask = function deleteTask(idx) {
+            if(currentUser){
+                ///deleteTask/:name/d/:desc
+                $.get("/deleteTask/" + currentUser.name + "/d/" + taskModel.getTask(idx).name, function(data) {
+                    if(data){
+                        data = JSON.parse(data);
+                    }
+                });
+            }
+        }
 
         /** Constructor
          * */
-        function initTaskList(elementId) {
+        function initTaskList(elementId, startUp) {
             function initList(elementId) {
                 var table = document.getElementById(elementId);
                 table.innerHTML = "";
@@ -87,18 +177,21 @@
 
             }
 
-            initList(elementId);
+            if(taskModel.getListLength() > 0 || startUp) initList(elementId);
 
             //TODO: THIS IS FOR DUBUGGING PURPOSES TEMPORARILY
-            if (initialTestRun) {
-                initialTestRun = false;
+            if (debuggingMode) {
+                debuggingMode = false;
                 tempTaskInit();
             }
             function tempTaskInit() {
-                taskModel.initTask("Walk the dog");
+                var testLogin = {name : "Admin@nowhere.com", password : "password"};
+                that.login(testLogin.name, testLogin.password);
+
+                /*taskModel.initTask("Walk the dog");
                 taskModel.initTask("Tell my wife I love her!");
                 taskModel.initTask("Go sit outside");
-                taskModel.initTask("Do the Dishes!!!!!!");
+                taskModel.initTask("Do the Dishes!!!!!!");*/
             }
 
             //^^^^^^^^^^^^^^^^

@@ -1,30 +1,87 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <script src="/javascripts/TaskModel.js"></script>
-  <script src="/javascripts/TaskList.js"></script>
-  <script>
-    var tl = new TaskList();
-  </script>
-  <link rel="stylesheet" type="text/css" href="/stylesheets/index.css">
-  <meta charset="UTF-8">
-  <title>Trying Tasks</title>
-</head>
-<body onload="tl.newList('TaskList')">
-  <div class="hud sign" id="welcomeSign">
-    <p>Welcome to Trying Tasks!</p>
-  </div>
-  <div>
-    <table class = "hud" id ="TaskList">
-    </table>
-  </div>
-  <hr class="divider">
-  <div class="hud" id="TaskMenu">
-    <input class="inputBox" id="inputBox" type="text" onchange="tl.taskInit()" placeholder="New task name...">
-    <button class="button" id="newTaskButton" onclick="tl.taskInit()"> New Task </button>
-  </div>
-  <div class="hud signature">
-          <p>Created and developed by Brandon Echols</p>
-  </div>
+        <head>
+    <script src="/javascripts/jquery.js"></script>
+    <script src="/javascripts/TaskModel.js"></script>
+    <script src="/javascripts/TaskList.js"></script>
+    <!--[if lt IE 9]>
+    <!--<script src="//html5shim.googlecode.com/svn/trunk/html5.js"></script>-->
+    <!--[endif]-->
+    <script>var tl = new TaskList();</script>
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+    <meta charset="utf-8">
+    <title>Trying Tasks</title>
+    <meta name="generator" content="Bootply" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <link href="stylesheets/bootstrap.min.css" rel="stylesheet">
+    <link href="stylesheets/styles.css" rel="stylesheet">
+    <link href="stylesheets/index.css" rel="stylesheet">
+        </head>
+        <body onload="tl.newList('TaskList')">
+<div class="navbar navbar-default">
+    <div class="container">
+        <a class="navbar-brand" href="#">TryingTasks</a>
+        <ul class="nav navbar-nav">
+            <li class="active"><a href="#">Home</a></li>
+            <li class="divider-vertical"></li>
+            <li><a href="#">More</a></li>
+            <li><a href="#">Options</a></li>
+            <li><a><input id="userNameInputBox" type="text" placeholder="Email address..."></a></li>
+            <li><a><input id="passwordInputBox" type="text" onchange="tl.login()" placeholder="First Name..."></a></li>
+            <li><a><button class="btn btn-success" id="createLoginButton" onclick="tl.createLogin()">Create Account</button></a></li>
+            <li><a><button class="btn btn-success" id="loginButton" onclick="tl.login()">Sign in</button></a></li>
+        </ul>
+    </div>
+</div>
+
+<div class="container">
+    <div class="jumbotron text-center">
+        <h1 id="WelcomeBanner">Trying Tasks</h1>
+        <p class="lead">Welcome to the new Trying Tasks. Jump right in and get started by creating a new task,
+                        signing into your account, or creating a new acocunt.</p>
+        <p><input class="inputBox" id="taskInputBox" type="text" onchange="tl.taskInit()" placeholder="New task name...">
+        <a class="btn btn-success" id="newTaskButton" onclick="tl.taskInit()">Create Task</a></p>
+    </div>
+
+    <div class="row">
+        <div class="col-lg-3">
+
+        </div>
+        <div class="col-lg-6">
+            <table class = "table" id ="TaskList">
+            </table>
+        </div>
+        <div class="col-lg-3">
+
+        </div>
+    </div>
+    <hr>
+    <p>Created and developed by Brandon Echols</p>
+    <!--<div class="jumbotron text-center">
+        <h2>Moving from Bootstrap 2.x to 3.0?</h2>
+        <p class="lead">Everything has changed, so you can't just replace the 2.x with the 3.0 files. The folks at Bootply, the Bootstrap Playground have created a migration guide to help.</p>
+        <p><a class="btn btn-large btn-success" href="http://www.bootply.com/bootstrap-3-migration-guide" target="ext">Migration Guide</a></p>
+    </div>-->
+</div>
+
+<!-- OLD CODE
+<div class="hud">
+        <input id="userNameInputBox" type="text" placeholder="Email address...">
+        <input id="passwordInputBox" type="text" onchange="tl.login()" placeholder="First Name...">
+        <button class="button" id="createLoginButton" onclick="tl.createLogin()"> Sign up </button>
+        <button class="button" id="loginButton" onclick="tl.login()"> Sign in </button>
+    </div>
+    <div class="hud sign" id="welcomeSign">
+        <p>Welcome to Trying Tasks!</p>
+    </div>
+    <hr class="divider">
+    <div class="hud" id="TaskMenu">
+        <input class="inputBox" id="taskInputBox" type="text" onchange="tl.taskInit()" placeholder="New task name...">
+        <button class="button" id="newTaskButton" onclick="tl.taskInit()"> New Task </button>
+    </div>
+    <div class="hud signature">
+        <p>Created and developed by Brandon Echols</p>
+    </div>
+    -->
 </body>
 </html>
