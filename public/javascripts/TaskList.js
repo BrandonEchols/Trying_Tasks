@@ -57,17 +57,20 @@
                 var user = {name : n, password : p};
             }
             if(user.name && user.password){
-                $.get("/login/" + user.name + "/p/" + user.password,  function(data) {
+                $.get("/login/" + user.name.toUpperCase() + "/p/" + user.password.toUpperCase(),  function(data) {
                     if(data){
+                        console.log("LOOK: inside login.");
                         data = JSON.parse(data);
                         currentUser = user;
                         that.getTaskList(currentUser);
-                        document.getElementById("WelcomeBanner").innerHTML = "Welcome, " + currentUser.name;
+                        document.getElementById("WelcomeBanner").innerHTML = "Logged in as:\n" + currentUser.name;
                     }
                     else{
                         alert("Username or password not recognized!");
                     }
                 });
+            }else{
+                alert("You must fill in the email,\nand first name box to sign in!");
             }
         }
 
@@ -81,20 +84,23 @@
                 var user = {name : n, password : p};
             }
             if(user.name && user.password){
-                $.get("/createLogin/" + user.name + "/p/" + user.password,  function(data) {
-                    if(data){
-                        /*data = JSON.parse(data);
-                        currentUser = user;
-                        that.getTaskList(currentUser);*/
-                    }
-                    that.login(user.name, user.password);
+                $.get("/checkForLogin/" + user.name.toUpperCase(), function(data){
+                   if(data){
+                       alert("That user already exists! Please try logging in as " + user.name + " instead.");
+                   }else{
+                       $.get("/createLogin/" + user.name.toUpperCase() + "/p/" + user.password.toUpperCase(),  function(data) {
+                           that.login(user.name, user.password);
+                       });
+                   }
                 });
+            }else{
+                alert("You must fill in the email,\nand the first name box to create a login!");
             }
         }
 
-        TaskList.prototype.deleteLogin = function deleteLogin(inName, inPass) {
-            if(inName && inPass){
-                $.get("/deleteLogin/" + inName + "/p/" + inPassword,  function(data) {
+        TaskList.prototype.deleteLogin = function deleteLogin(inName) {
+            if(inName){
+                $.get("/deleteLogin/" + inName.toUpperCase(),  function(data) {
                     if(data){
                         data = JSON.parse(data);
                     }
@@ -103,7 +109,7 @@
         }
 
         TaskList.prototype.getTaskList = function getTaskList(user) {
-            $.get("/gettasks/" + user.name, function(data) {
+            $.get("/gettasks/" + user.name.toUpperCase(), function(data) {
                 if(data){
                      data = JSON.parse(data);
                      taskModel.clearList();
@@ -120,7 +126,7 @@
 
         TaskList.prototype.createTask = function createTask(name) {
             if(currentUser){
-                $.get("/createTask/" + currentUser.name + "/d/" + name, function(data) {
+                $.get("/createTask/" + currentUser.name.toUpperCase() + "/d/" + name, function(data) {
                     if(data){
                         data = JSON.parse(data);
                     }
@@ -130,7 +136,7 @@
 
         TaskList.prototype.updateTask = function updateTask(idx) {
             if(currentUser){
-                $.get("/updateTask/" + currentUser.name + "/d/" + taskModel.getTask(idx).name + "/c/" + taskModel.isComplete(idx), function(data) {
+                $.get("/updateTask/" + currentUser.name.toUpperCase() + "/d/" + taskModel.getTask(idx).name + "/c/" + taskModel.isComplete(idx), function(data) {
                     if(data){
                     }
                 });
@@ -140,7 +146,7 @@
         TaskList.prototype.deleteTask = function deleteTask(idx) {
             if(currentUser){
                 ///deleteTask/:name/d/:desc
-                $.get("/deleteTask/" + currentUser.name + "/d/" + taskModel.getTask(idx).name, function(data) {
+                $.get("/deleteTask/" + currentUser.name.toUpperCase() + "/d/" + taskModel.getTask(idx).name, function(data) {
                     if(data){
                         data = JSON.parse(data);
                     }

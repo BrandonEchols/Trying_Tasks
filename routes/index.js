@@ -2,7 +2,7 @@ var express = require('express');
 var router = express.Router();
 var pg = require('pg');
 
-var connectionString = process.env.DATABASE_URL ? process.env.DATABASE_URL : "postgres://postgres:linked in@localhost:5432/db_test";
+var connectionString = process.env.DATABASE_URL ? process.env.DATABASE_URL : "postgres://postgres:linked in@localhost:5432/tt_db";
 
 /* GET home page. */
 router.get('/', function(req, res, next) {
@@ -38,9 +38,24 @@ router.get('/login/:name/p/:password', function(request, response) {
     });
 });
 
+/*CHECK FOR EXISTING LOGIN*/
+router.get('/checkForLogin/:name', function(request, response) {
+    var query = "SELECT * FROM user_table WHERE name = '" + request.params.name + "';";
+    pg.connect(connectionString, function(err, client, done) {
+        client.query(query, function(err, result) {
+            done();
+            if (err) {
+                console.error(err); response.send("Error " + err);
+            }
+            else {
+                response.send(JSON.stringify(result.rows));
+            }
+        });
+    });
+});
+
 /*CREATE LOGIN*/
 router.get('/createLogin/:name/p/:password', function(request, response) {
-    //TODO:Write a query that will check to make sure the user does not already exsist
     var query = "INSERT INTO user_table(name, password) " +
         "VALUES('" + request.params.name + "', '" + request.params.password + "');";
     pg.connect(connectionString, function(err, client, done) {
@@ -57,9 +72,8 @@ router.get('/createLogin/:name/p/:password', function(request, response) {
 });
 
 /*DELETE LOGIN*/
-router.get('/deleteLogin/:name/p/:password', function(request, response) {
-    var query = "DELETE FROM user_table WHERE name = '" + request.params.name + "' " +
-        "AND password = '" + request.params.passowrd + "';";
+router.get('/deleteLogin/:name', function(request, response) {
+    var query = "DELETE FROM user_table WHERE name = '" + request.params.name + "';";
     pg.connect(connectionString, function(err, client, done) {
         client.query(query, function(err, result) {
             done();
