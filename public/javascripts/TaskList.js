@@ -60,14 +60,18 @@
                 if(currentUser && user.name == currentUser.name) alert("You are already logged in as " + currentUser.name);
                 else {
                     $.get("/login/" + user.name.toUpperCase() + "/p/" + user.password.toUpperCase(), function (data) {
-                        if (data) {
+                        if(data) {
                             data = JSON.parse(data);
-                            currentUser = user;
-                            that.getTaskList(currentUser);
-                            document.getElementById("WelcomeBanner").innerHTML = "Logged in as:\n" + currentUser.name;
-                        }
-                        else {
-                            alert("Username or password not recognized!");
+                            if (data[0] && data[0].name == user.name.toUpperCase()) {
+                                console.log("LOOK: inside login function. data = ", data);
+                                currentUser = user;
+                                that.getTaskList(currentUser);
+                                document.getElementById("WelcomeBanner").innerHTML = "Logged in as:\n" + currentUser.name;
+                            }else {
+                                alert("Username or password not recognized!");
+                            }
+                        }else{
+                            alert("ERROR: no data returned from /login/:name");
                         }
                     });
                 }
@@ -84,16 +88,22 @@
                 var n = document.getElementById("userNameInputBox").value;
                 var p = document.getElementById("passwordInputBox").value;
                 var user = {name : n, password : p};
+                console.log("LOOK: inside create login getting username and password from boxes\nuser = ", user);
             }
             if(user.name && user.password){
                 $.get("/checkForLogin/" + user.name.toUpperCase(), function(data){
-                   if(data){
-                       alert("That user already exists! Please try logging in as " + user.name + " instead.");
-                   }else{
-                       $.get("/createLogin/" + user.name.toUpperCase() + "/p/" + user.password.toUpperCase(),  function(data) {
-                           that.login(user.name, user.password);
-                       });
-                   }
+                    if(data) {
+                        data = JSON.parse(data);
+                        if (data[0] && data[0].name == user.name.toUpperCase()) {
+                            alert("That user already exists! Please try logging in as " + user.name + " instead.");
+                        } else {
+                            $.get("/createLogin/" + user.name.toUpperCase() + "/p/" + user.password.toUpperCase(), function (data) {
+                                that.login(user.name, user.password);
+                            });
+                        }
+                    }else{
+                        alert("ERROR: no data returned from /checkForLogin/:name");
+                    }
                 });
             }else{
                 alert("You must fill in the email,\nand the first name box to create a login!");
