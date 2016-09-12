@@ -34,9 +34,7 @@
             var name = document.getElementById("taskInputBox").value;
             document.getElementById("taskInputBox").value = "";
             if (name) {
-                console.log("LOOK: taskModel.getListLength = " + taskModel.getListLength());
                 if(taskModel.getListLength() < 1){
-                    console.log("LOOK: inside condition for task init");
                     initTaskList("TaskList", true);
                 }
                 taskModel.initTask(name);
@@ -61,9 +59,8 @@
                 else {
                     $.get("/login/" + user.name.toUpperCase() + "/p/" + user.password.toUpperCase(), function (data) {
                         if(data) {
-                            data = JSON.parse(data);
+                            if(data[0]) data = JSON.parse(data);
                             if (data[0] && data[0].name == user.name.toUpperCase()) {
-                                console.log("LOOK: inside login function. data = ", data);
                                 currentUser = user;
                                 that.getTaskList(currentUser);
                                 document.getElementById("WelcomeBanner").innerHTML = "Logged in as:\n" + currentUser.name;
@@ -88,7 +85,6 @@
                 var n = document.getElementById("userNameInputBox").value;
                 var p = document.getElementById("passwordInputBox").value;
                 var user = {name : n, password : p};
-                console.log("LOOK: inside create login getting username and password from boxes\nuser = ", user);
             }
             if(user.name && user.password){
                 $.get("/checkForLogin/" + user.name.toUpperCase(), function(data){
@@ -123,14 +119,16 @@
         TaskList.prototype.getTaskList = function getTaskList(user) {
             $.get("/gettasks/" + user.name.toUpperCase(), function(data) {
                 if(data){
-                     data = JSON.parse(data);
-                     taskModel.clearList();
-                     for (var i = 0; i < data.length; i++){
-                         taskModel.initTask(data[i].description, data[i].completed);
+                     if (data[0]) {
+                         data = JSON.parse(data);
+                         taskModel.clearList();
+                         for (var i = 0; i < data.length; i++){
+                             taskModel.initTask(data[i].description, data[i].completed);
+                         }
                      }
                 }
                 else{
-                    taskModel.clearList();
+                    alert("ERROR: data not returned from /gettasks/");
                 }
                 that.updateDisplay();
              });
