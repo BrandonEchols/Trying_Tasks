@@ -93,7 +93,7 @@
             if(user.name && user.password){
                 $.get("/checkForLogin/" + user.name.toUpperCase(), function(data){
                     if(data) {
-                        data = JSON.parse(data);
+                        if (data[0]) data = JSON.parse(data);
                         if (data[0] && data[0].name == user.name.toUpperCase()) {
                             alert("That user already exists! Please try logging in as " + user.name + " instead.");
                         } else {
