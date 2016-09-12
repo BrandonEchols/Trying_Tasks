@@ -110,7 +110,8 @@
             if(inName){
                 $.get("/deleteLogin/" + inName.toUpperCase(),  function(data) {
                     if(data){
-                        data = JSON.parse(data);
+                    }else{
+                        alert("ERROR: data not returned from /deleteLogin/");
                     }
                 });
             }
@@ -138,7 +139,8 @@
             if(currentUser){
                 $.get("/createTask/" + currentUser.name.toUpperCase() + "/d/" + name, function(data) {
                     if(data){
-                        data = JSON.parse(data);
+                    }else{
+                        alert("ERROR: data not returned from /createTask/");
                     }
                 });
             }
@@ -148,6 +150,8 @@
             if(currentUser){
                 $.get("/updateTask/" + currentUser.name.toUpperCase() + "/d/" + taskModel.getTask(idx).name + "/c/" + taskModel.isComplete(idx), function(data) {
                     if(data){
+                    }else{
+                        alert("ERROR: data not returned from /updateTask/");
                     }
                 });
             }
@@ -158,7 +162,8 @@
                 ///deleteTask/:name/d/:desc
                 $.get("/deleteTask/" + currentUser.name.toUpperCase() + "/d/" + taskModel.getTask(idx).name, function(data) {
                     if(data){
-                        data = JSON.parse(data);
+                    }else{
+                        alert("ERROR: data not returned from /deleteTask/");
                     }
                 });
             }
