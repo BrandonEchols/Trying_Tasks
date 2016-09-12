@@ -109,7 +109,7 @@ router.get('/createTask/:name/d/:desc', function(request, response) {
 router.get('/gettasks/:name', function(request, response) {
     var name = request.params.name;
     pg.connect(connectionString, function(err, client, done) {
-        client.query("SELECT description, completed FROM task_table WHERE user_id = (SELECT id FROM user_table WHERE name = '" + name + "');",
+        client.query("SELECT description, completed FROM task_table WHERE user_id IN (SELECT id FROM user_table WHERE name = '" + name + "');",
             function(err, result) {
             done();
             if (err) {
@@ -125,7 +125,7 @@ router.get('/gettasks/:name', function(request, response) {
 /*UPDATE TASK*/
 router.get('/updateTask/:name/d/:desc/c/:comp', function(request, response) {
     var query = "UPDATE task_table SET completed = '" + request.params.comp +
-                "' WHERE user_id = (SELECT id FROM user_table WHERE name = '" + request.params.name + "') " +
+                "' WHERE user_id = (SELECT id FROM user_table WHERE name IN '" + request.params.name + "') " +
                 "AND description = '" + request.params.desc + "';";
     pg.connect(connectionString, function(err, client, done) {
         client.query(query, function(err, result) {
