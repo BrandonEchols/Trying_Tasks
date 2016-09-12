@@ -121,6 +121,8 @@
             $.get("/gettasks/" + user.name.toUpperCase(), function(data) {
                 if(data){
                      if (data[0]) {
+                         console.log("LOOK: inside getTaskList typeof data = " + typeof data);
+                         console.log("LOOK: inside getTaskList data = ", data);
                          data = JSON.parse(data);
                          taskModel.clearList();
                          for (var i = 0; i < data.length; i++){
