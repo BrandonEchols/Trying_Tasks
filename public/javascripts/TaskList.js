@@ -121,8 +121,6 @@
             $.get("/gettasks/" + user.name.toUpperCase(), function(data) {
                 if(data){
                      if (data[0]) {
-                         console.log("LOOK: inside getTaskList typeof data = " + typeof data);
-                         console.log("LOOK: inside getTaskList data = ", data);
                          data = JSON.parse(data);
                          taskModel.clearList();
                          for (var i = 0; i < data.length; i++){
@@ -149,11 +147,9 @@
         }
 
         TaskList.prototype.updateTask = function updateTask(idx) {
-            console.log("/updateTask/" + currentUser.name.toUpperCase() + "/d/" + taskModel.getTask(idx).name + "/c/" + taskModel.isComplete(idx));
             if(currentUser){
                 $.get("/updateTask/" + currentUser.name.toUpperCase() + "/d/" + taskModel.getTask(idx).name + "/c/" + taskModel.isComplete(idx), function(data) {
                     if(data){
-                        console.log("LOOK: just updated a task, data = ", data);
                     }else{
                         alert("ERROR: data not returned from /updateTask/");
                     }

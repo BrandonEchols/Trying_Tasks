@@ -1,13 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
         <head>
-    <script src="/javascripts/jquery.js"></script>
-    <script src="/javascripts/TaskModel.js"></script>
-    <script src="/javascripts/TaskList.js"></script>
-    <!--[if lt IE 9]>
-    <!--<script src="//html5shim.googlecode.com/svn/trunk/html5.js"></script>-->
-    <!--[endif]-->
-    <script>var tl = new TaskList();</script>
     <meta http-equiv="content-type" content="text/html; charset=UTF-8">
     <meta charset="utf-8">
     <title>Trying Tasks</title>
@@ -66,31 +59,13 @@
             data-name="Trying Tasks"
             data-button="donate" src="https://www.paypalobjects.com/js/external/paypal-button.min.js?merchant=bechols@digis.net" async="async"
     ></script>
-    <!--<div class="jumbotron text-center">
-        <h2>Moving from Bootstrap 2.x to 3.0?</h2>
-        <p class="lead">Everything has changed, so you can't just replace the 2.x with the 3.0 files. The folks at Bootply, the Bootstrap Playground have created a migration guide to help.</p>
-        <p><a class="btn btn-large btn-success" href="http://www.bootply.com/bootstrap-3-migration-guide" target="ext">Migration Guide</a></p>
-    </div>-->
 </div>
-
-<!-- OLD CODE
-<div class="hud">
-        <input id="userNameInputBox" type="text" placeholder="Email address...">
-        <input id="passwordInputBox" type="text" onchange="tl.login()" placeholder="First Name...">
-        <button class="button" id="createLoginButton" onclick="tl.createLogin()"> Sign up </button>
-        <button class="button" id="loginButton" onclick="tl.login()"> Sign in </button>
-    </div>
-    <div class="hud sign" id="welcomeSign">
-        <p>Welcome to Trying Tasks!</p>
-    </div>
-    <hr class="divider">
-    <div class="hud" id="TaskMenu">
-        <input class="inputBox" id="taskInputBox" type="text" onchange="tl.taskInit()" placeholder="New task name...">
-        <button class="button" id="newTaskButton" onclick="tl.taskInit()"> New Task </button>
-    </div>
-    <div class="hud signature">
-        <p>Created and developed by Brandon Echols</p>
-    </div>
-    -->
+<script src="/javascripts/jquery.js"></script>
+<script src="/javascripts/TaskModel.js"></script>
+<script src="/javascripts/TaskList.js"></script>
+<!--[if lt IE 9]>
+<!--<script src="//html5shim.googlecode.com/svn/trunk/html5.js"></script>-->
+<!--[endif]-->
+<script>var tl = new TaskList();</script>
 </body>
 </html>
