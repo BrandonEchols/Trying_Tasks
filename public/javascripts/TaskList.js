@@ -149,9 +149,11 @@
         }
 
         TaskList.prototype.updateTask = function updateTask(idx) {
+            console.log("/updateTask/" + currentUser.name.toUpperCase() + "/d/" + taskModel.getTask(idx).name + "/c/" + taskModel.isComplete(idx));
             if(currentUser){
                 $.get("/updateTask/" + currentUser.name.toUpperCase() + "/d/" + taskModel.getTask(idx).name + "/c/" + taskModel.isComplete(idx), function(data) {
                     if(data){
+                        console.log("LOOK: just updated a task, data = ", data);
                     }else{
                         alert("ERROR: data not returned from /updateTask/");
                     }
