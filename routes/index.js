@@ -89,6 +89,7 @@ router.get('/deleteLogin/:name', function(request, response) {
 
 /*CREATE TASK*/
 router.get('/createTask/:name/d/:desc', function(request, response) {
+    console.log("LOOK: CreateTask called. name = " + request.params.name + ", desc = " + request.params.desc);
     var query = "INSERT INTO task_table(user_id, description, completed) " +
                 "VALUES((SELECT id FROM user_table WHERE name = '" + request.params.name +
                 "'), '" + request.params.desc + "', false);";

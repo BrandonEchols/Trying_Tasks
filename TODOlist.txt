@@ -1,0 +1,4 @@
+1. Fix database multipule entry and not getting task's back.
+2. Make task table bootstrap and cool looking.
+3. add some color/background picture
+4. disable more and options buttons in the nav bar
