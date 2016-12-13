@@ -136,6 +136,7 @@
         }
 
         TaskList.prototype.createTask = function createTask(name) {
+            console.log("LOOK: create task being called. Stack=" + new Error().stack);
             if(currentUser){
                 $.get("/createTask/" + currentUser.name.toUpperCase() + "/d/" + name, function(data) {
                     if(data){
